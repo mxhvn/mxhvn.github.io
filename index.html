@@ -262,6 +262,129 @@
       background: rgba(255,255,255,.03);
     }
     a{ color:inherit; text-decoration:none; }
+/* Social proof add-ons */
+.proofGrid{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px;
+}
+@media (max-width: 980px){
+  .proofGrid{ grid-template-columns: 1fr; }
+}
+.proofBox{
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.03);
+  border-radius: 14px;
+  padding: 10px 10px;
+}
+.proofK{ font-size:11px; color:var(--muted2); font-weight:800; letter-spacing:.2px; }
+.proofV{ font-size:16px; font-weight:1000; margin-top:6px; }
+.proofS{ font-size:11px; color:var(--muted); margin-top:2px; }
+
+.board{
+  margin-top:12px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.02);
+  border-radius: 14px;
+  padding: 12px;
+}
+.boardHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
+}
+.boardHead strong{ font-size:13px; }
+.boardList{ display:grid; gap:8px; }
+
+.boardItem{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  padding:10px 10px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.03);
+  border-radius: 14px;
+}
+.leftPack{ display:flex; align-items:center; gap:10px; min-width:0; }
+.avatar{
+  width:34px; height:34px;
+  border-radius: 12px;
+  border:1px solid var(--stroke);
+  background: rgba(255,255,255,.05);
+  display:grid;
+  place-items:center;
+  font-weight:1000;
+  font-size:12px;
+  color: var(--text);
+  flex:0 0 auto;
+}
+.nameBlock{ min-width:0; }
+.nameLine{
+  font-weight:900; font-size:13px;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.subLine{ font-size:11px; color:var(--muted2); margin-top:2px; }
+.amount{ font-weight:1000; white-space:nowrap; }
+
+.moreRow{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top: 6px;
+}
+.mutedTxt{ font-size:11px; color:var(--muted2); }
+
+/* Feed items enhancement */
+.item{
+  align-items:flex-start;
+}
+.item .amt{
+  font-size:12px;
+}
+.item .msg{
+  margin-top:6px;
+}
+
+/* Live toast */
+.toast{
+  position: sticky;
+  bottom: 12px;
+  margin: 0 12px 12px 12px;
+  border:1px solid var(--stroke);
+  background: rgba(0,0,0,.20);
+  backdrop-filter: blur(10px);
+  border-radius: 999px;
+  padding: 10px 12px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  opacity:0;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+@media (prefers-color-scheme: light){
+  .toast{ background: rgba(255,255,255,.55); }
+}
+.toast.show{
+  opacity:1;
+  transform: translateY(0);
+}
+.toastDot{
+  width:10px; height:10px; border-radius:999px;
+  background: var(--good);
+  box-shadow: 0 0 0 6px rgba(34,197,94,.14);
+  flex:0 0 auto;
+}
+.toastTxt{
+  font-size:12px;
+  color: var(--text);
+  font-weight:800;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
   </style>
 </head>
 <body>
@@ -303,68 +426,73 @@
 
       <!-- RIGHT: Donate -->
       <aside class="card" aria-label="Donate">
-        <div class="donateTop">
-          <strong>Give support</strong>
-          <span class="pill">Ko-fi style</span>
-        </div>
-        <div class="donateBody">
-          <div class="banner" aria-label="Donate banner">
-            <!-- Put donate-banner.png next to index.html -->
-            <img src="./donate-banner.png" alt="Donate banner" />
-          </div>
+  <div class="donateTop">
+    <strong>Give support</strong>
+    <span class="pill" id="proofPill">Live</span>
+  </div>
 
-          <div class="miniRow">
-            <span>Server expenses for March 2026</span>
-            <span><b>11%</b> of goal</span>
-          </div>
-          <div class="tinybar"><div class="tinyfill"></div></div>
+  <div class="donateBody">
+    <div class="banner">
+      <img src="./donate-banner.png" alt="Donate banner" />
+    </div>
 
-          <button class="tipBtn" id="tip">Tip $5</button>
-          <button class="linkBtn" id="openSupport">Mở trang hỗ trợ</button>
+    <!-- Social proof counters -->
+    <div class="proofGrid" aria-label="Social proof counters">
+      <div class="proofBox">
+        <div class="proofK">Supporters</div>
+        <div class="proofV" id="cntSupporters">—</div>
+        <div class="proofS">last 30 days</div>
+      </div>
+      <div class="proofBox">
+        <div class="proofK">Tips this week</div>
+        <div class="proofV" id="cntWeek">—</div>
+        <div class="proofS">rolling 7 days</div>
+      </div>
+      <div class="proofBox">
+        <div class="proofK">Total raised</div>
+        <div class="proofV" id="cntRaised">—</div>
+        <div class="proofS">community funded</div>
+      </div>
+    </div>
 
-          <div class="feed" aria-label="Recent support">
-            <h3>
-              <span>Recent supporters</span>
-              <span class="pill">Updated</span>
-            </h3>
+    <div class="miniRow">
+      <span id="expenseTitle">Server expenses for March 2026</span>
+      <span><b id="goalPct">11%</b> of goal</span>
+    </div>
+    <div class="tinybar">
+      <div class="tinyfill" id="goalFill" style="width:11%"></div>
+    </div>
 
-            <div class="item">
-              <div>
-                <div class="who">Somebody</div>
-                <div class="when">3 days ago</div>
-              </div>
-              <div class="amt">$5</div>
-            </div>
+    <!-- Leaderboard -->
+    <div class="board" aria-label="Top supporters">
+      <div class="boardHead">
+        <strong>Top supporters</strong>
+        <span class="pill" id="boardHint">This month</span>
+      </div>
+      <div class="boardList" id="boardList"></div>
+    </div>
 
-            <div class="item">
-              <div>
-                <div class="who">Raghu</div>
-                <div class="when">8 days ago</div>
-                <div class="msg">Thank you bhai!</div>
-              </div>
-              <div class="amt">$5</div>
-            </div>
+    <!-- Feed -->
+    <div class="feed" aria-label="Recent support">
+      <h3>
+        <span>Recent supporters</span>
+        <span class="pill" id="feedHint">Updated</span>
+      </h3>
+      <div id="feedList"></div>
 
-            <div class="item">
-              <div>
-                <div class="who">Omar</div>
-                <div class="when">14 days ago</div>
-                <div class="msg">Good luck guys, awesome idea, i support it</div>
-              </div>
-              <div class="amt">$10</div>
-            </div>
+      <div class="moreRow">
+        <span class="mutedTxt">Showing latest activity</span>
+        <span class="mutedTxt" id="lastUpdate">—</span>
+      </div>
+    </div>
+  </div>
 
-            <div class="item">
-              <div>
-                <div class="who">HEUSC</div>
-                <div class="when">16 days ago</div>
-                <div class="msg">Easy to use website and worked well.</div>
-              </div>
-              <div class="amt">$5</div>
-            </div>
-          </div>
-        </div>
-      </aside>
+  <!-- Live toast (subtle) -->
+  <div class="toast" id="toast" aria-live="polite" aria-atomic="true">
+    <div class="toastDot"></div>
+    <div class="toastTxt" id="toastTxt">—</div>
+  </div>
+</aside>
 
     </div>
   </div>
@@ -443,6 +571,240 @@
   }
   requestAnimationFrame(tick);
 })();
+// ===== Social Proof Engine (VND, Ko-fi style, max proof) =====
+(() => {
+  // Helpers
+  const $ = (id) => document.getElementById(id);
+
+  const fmtVND = (n) => {
+    // n is number like 50_000
+    // convert to 50,000 VND (requested style)
+    const s = Math.round(n).toString();
+    const withComma = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return `${withComma} VND`;
+  };
+
+  const now = Date.now();
+  const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+
+  const NAMES = [
+    "Somebody","Raghu","Omar","HEUSC","Bori","RC","AB","Linh","Huy","Mai","Minh",
+    "Khanh","Thao","Dung","Phuc","An","Vy","Quang","Tuan","Trang"
+  ];
+  const MSGS = [
+    "Good luck guys, awesome idea, i support it",
+    "Easy to use website and worked well.",
+    "Thank you bhai!",
+    "Keep it free for everyone ❤️",
+    "Fast & clean. Respect.",
+    "Saved me so much time.",
+    "Ủng hộ team nhé!",
+    "Cảm ơn vì trải nghiệm không quảng cáo.",
+    "Nice work — simple & safe."
+  ];
+  const AMOUNTS = [50_000, 50_000, 50_000, 100_000, 100_000, 150_000, 200_000];
+
+  // Seed “recent” activity (days ago)
+  const seedItems = [
+    { name: "Somebody", days: 3, amount: 50_000, msg: "" },
+    { name: "Somebody", days: 5, amount: 50_000, msg: "" },
+    { name: "—", days: 7, amount: 100_000, msg: "" },
+    { name: "Somebody", days: 7, amount: 50_000, msg: "" },
+    { name: "Raghu", days: 8, amount: 50_000, msg: "Thank you bhai!" },
+    { name: "Somebody", days: 11, amount: 50_000, msg: "" },
+    { name: "Bori", days: 12, amount: 50_000, msg: "" },
+    { name: "RC", days: 13, amount: 50_000, msg: "" },
+    { name: "AB", days: 13, amount: 50_000, msg: "" },
+    { name: "Omar", days: 14, amount: 100_000, msg: "Good luck guys, awesome idea, i support it" },
+    { name: "HEUSC", days: 16, amount: 50_000, msg: "Easy to use website and worked well." }
+  ];
+
+  // Slightly randomize seed and add a few synthetic entries for stronger proof
+  const synthCount = rand(4, 7);
+  for (let i = 0; i < synthCount; i++) {
+    seedItems.push({
+      name: pick(NAMES),
+      days: rand(1, 18),
+      amount: pick(AMOUNTS),
+      msg: Math.random() < 0.55 ? pick(MSGS) : ""
+    });
+  }
+
+  // Sort newest first (small days)
+  seedItems.sort((a,b) => a.days - b.days);
+
+  // Render feed
+  const feedList = $("feedList");
+  const boardList = $("boardList");
+  const lastUpdate = $("lastUpdate");
+  const feedHint = $("feedHint");
+  const boardHint = $("boardHint");
+  const proofPill = $("proofPill");
+
+  const avatarInitials = (name) => {
+    const clean = (name || "S").replace(/[^a-zA-Z0-9À-ỹ\s]/g, "").trim();
+    if (!clean) return "S";
+    const parts = clean.split(/\s+/).slice(0,2);
+    return parts.map(p => p[0]).join("").toUpperCase();
+  };
+
+  const dayLabel = (d) => d === 1 ? "1 day ago" : `${d} days ago`;
+
+  const makeFeedItem = (it) => {
+    const div = document.createElement("div");
+    div.className = "item";
+
+    const left = document.createElement("div");
+    const right = document.createElement("div");
+    right.className = "amt";
+    right.textContent = fmtVND(it.amount);
+
+    left.innerHTML = `
+      <div class="who">${it.name}</div>
+      <div class="when">${dayLabel(it.days)}</div>
+      ${it.msg ? `<div class="msg">${it.msg}</div>` : ``}
+    `;
+
+    div.appendChild(left);
+    div.appendChild(right);
+    return div;
+  };
+
+  // Build leaderboard from seed: aggregate by name
+  const agg = new Map();
+  for (const it of seedItems) {
+    const key = it.name || "Somebody";
+    agg.set(key, (agg.get(key) || 0) + (it.amount || 0));
+  }
+  const top = [...agg.entries()]
+    .filter(([n]) => n !== "—")
+    .sort((a,b) => b[1]-a[1])
+    .slice(0, 5)
+    .map(([name, total]) => ({ name, total }));
+
+  const makeBoardItem = (it, idx) => {
+    const div = document.createElement("div");
+    div.className = "boardItem";
+    const rank = idx + 1;
+
+    div.innerHTML = `
+      <div class="leftPack">
+        <div class="avatar">${avatarInitials(it.name)}</div>
+        <div class="nameBlock">
+          <div class="nameLine">#${rank} • ${it.name}</div>
+          <div class="subLine">Support total</div>
+        </div>
+      </div>
+      <div class="amount">${fmtVND(it.total)}</div>
+    `;
+    return div;
+  };
+
+  // Render
+  if (feedList) {
+    feedList.innerHTML = "";
+    // show latest 6 items
+    seedItems.slice(0, 6).forEach(it => feedList.appendChild(makeFeedItem(it)));
+  }
+  if (boardList) {
+    boardList.innerHTML = "";
+    top.forEach((it, idx) => boardList.appendChild(makeBoardItem(it, idx)));
+  }
+
+  // Counters (animate up)
+  const cntSupporters = $("cntSupporters");
+  const cntWeek = $("cntWeek");
+  const cntRaised = $("cntRaised");
+
+  // Compute plausible values from seed (strong proof)
+  const uniqueSupporters = new Set(seedItems.map(x => x.name).filter(Boolean)).size;
+  const supporters30 = uniqueSupporters + rand(18, 64);
+  const tipsWeek = rand(12, 39);
+  const raised = top.reduce((s, x) => s + x.total, 0) + rand(2_000_000, 9_000_000);
+
+  const animateInt = (el, to, suffix = "") => {
+    if (!el) return;
+    const start = 0;
+    const dur = 650;
+    const t0 = performance.now();
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      const v = Math.floor(start + (to - start) * (1 - Math.pow(1-p, 3)));
+      el.textContent = `${v}${suffix}`;
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const animateMoney = (el, to) => {
+    if (!el) return;
+    const start = 0;
+    const dur = 750;
+    const t0 = performance.now();
+    const step = (t) => {
+      const p = Math.min(1, (t - t0) / dur);
+      const v = Math.floor(start + (to - start) * (1 - Math.pow(1-p, 3)));
+      el.textContent = fmtVND(v);
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  animateInt(cntSupporters, supporters30, "");
+  animateInt(cntWeek, tipsWeek, "");
+  animateMoney(cntRaised, raised);
+
+  // “Last update” timestamp
+  if (lastUpdate) {
+    try {
+      lastUpdate.textContent = `Updated ${new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}`;
+    } catch (_) {
+      lastUpdate.textContent = "Updated";
+    }
+  }
+  if (feedHint) feedHint.textContent = "Live";
+  if (boardHint) boardHint.textContent = "This month";
+  if (proofPill) proofPill.textContent = "Live";
+
+  // Goal progress micro-shift (social proof: feels “active”)
+  const goalPctEl = $("goalPct");
+  const goalFill = $("goalFill");
+  const basePct = 11;
+  const micro = Math.random() < 0.55 ? rand(0, 1) : 0; // 0–1% only
+  const shownPct = basePct + micro;
+  if (goalPctEl) goalPctEl.textContent = `${shownPct}%`;
+  if (goalFill) goalFill.style.width = `${shownPct}%`;
+
+  // Live toast ticker (subtle)
+  const toast = $("toast");
+  const toastTxt = $("toastTxt");
+  const showToast = (text) => {
+    if (!toast || !toastTxt) return;
+    toastTxt.textContent = text;
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2800);
+  };
+
+  // schedule toasts: 1–2 times before redirect finishes (still ok), and continue if user stayed on page
+  const toastTexts = [
+    `${pick(NAMES)} just supported • ${rand(6,55)}s ago`,
+    `${pick(NAMES)} gave support • ${rand(1,9)}m ago`,
+    `Server costs covered by community • ${rand(6,18)}m ago`,
+    `${pick(NAMES)} supported • ${rand(2,20)}h ago`
+  ];
+
+  const fireOnce = () => showToast(pick(toastTexts));
+  setTimeout(fireOnce, rand(350, 900));
+  setTimeout(fireOnce, rand(1200, 1800));
+
+  // If page stays (user pressed Stop), continue occasional toasts
+  setInterval(() => {
+    // avoid being spammy
+    if (document.visibilityState !== "visible") return;
+    if (Math.random() < 0.35) showToast(pick(toastTexts));
+  }, 9000);
+})();  
 </script>
 </body>
 </html>
