@@ -6,7 +6,7 @@
   <meta name="color-scheme" content="light dark" />
   <title>MXHVN • Đang điều hướng…</title>
 
-  <link rel="prefetch" href="/vn/" as="document">
+  <link rel="prefetch" href="/vn/" as="document" />
   <style>
     :root{
       --bg:#0b1220;
@@ -31,6 +31,7 @@
         --shadow: 0 18px 60px rgba(0,0,0,.12);
       }
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -92,6 +93,7 @@
     @media (prefers-color-scheme: light){
       .mark:after{ background: rgba(255,255,255,.45); border-color: rgba(0,0,0,.06); }
     }
+
     h1{ margin:0; font-size:16px; letter-spacing:.2px; }
     .sub{ margin:4px 0 0 0; font-size:13px; color:var(--muted); line-height:1.35; }
 
@@ -188,6 +190,7 @@
       white-space:nowrap;
     }
     .donateBody{ padding:14px; }
+
     .banner{
       width:100%;
       border-radius:14px;
@@ -195,10 +198,8 @@
       overflow:hidden;
       background: rgba(255,255,255,.03);
     }
-    .banner img{
-      width:100%;
-      display:block;
-    }
+    .banner img{ width:100%; display:block; }
+
     .miniRow{
       margin-top:12px;
       display:flex;
@@ -207,6 +208,7 @@
       color:var(--muted);
       gap:10px;
     }
+
     .tinybar{
       margin-top:8px;
       height:10px;
@@ -222,12 +224,6 @@
       border-radius:999px;
     }
 
-    .tipBtn{
-      margin-top:12px;
-      width:100%;
-      background: linear-gradient(135deg, rgba(79,70,229,.30), rgba(59,130,246,.18));
-      border-color: rgba(79,70,229,.40);
-    }
     .feed{
       margin-top:14px;
       border-top:1px solid var(--stroke);
@@ -242,6 +238,7 @@
       justify-content:space-between;
       align-items:center;
     }
+
     .item{
       display:flex;
       justify-content:space-between;
@@ -251,142 +248,125 @@
       background: rgba(255,255,255,.03);
       border-radius:14px;
       margin-bottom:10px;
+      align-items:flex-start;
     }
     .who{ font-weight:800; color:var(--text); font-size:13px; }
     .when{ color:var(--muted2); font-size:12px; margin-top:2px; }
     .msg{ color:var(--muted); font-size:12px; margin-top:6px; line-height:1.35; }
-    .amt{ font-weight:900; color:var(--text); white-space:nowrap; }
-    .linkBtn{
-      margin-top:10px;
-      width:100%;
-      background: rgba(255,255,255,.03);
+    .amt{ font-weight:900; color:var(--text); white-space:nowrap; font-size:12px; }
+
+    /* Social proof add-ons */
+    .proofGrid{
+      margin-top:12px;
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:10px;
     }
-    a{ color:inherit; text-decoration:none; }
-/* Social proof add-ons */
-.proofGrid{
-  margin-top:12px;
-  display:grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap:10px;
-}
-@media (max-width: 980px){
-  .proofGrid{ grid-template-columns: 1fr; }
-}
-.proofBox{
-  border:1px solid var(--stroke);
-  background: rgba(255,255,255,.03);
-  border-radius: 14px;
-  padding: 10px 10px;
-}
-.proofK{ font-size:11px; color:var(--muted2); font-weight:800; letter-spacing:.2px; }
-.proofV{ font-size:16px; font-weight:1000; margin-top:6px; }
-.proofS{ font-size:11px; color:var(--muted); margin-top:2px; }
+    @media (max-width: 980px){
+      .proofGrid{ grid-template-columns: 1fr; }
+    }
+    .proofBox{
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+      padding: 10px 10px;
+    }
+    .proofK{ font-size:11px; color:var(--muted2); font-weight:800; letter-spacing:.2px; }
+    .proofV{ font-size:16px; font-weight:1000; margin-top:6px; }
+    .proofS{ font-size:11px; color:var(--muted); margin-top:2px; }
 
-.board{
-  margin-top:12px;
-  border:1px solid var(--stroke);
-  background: rgba(255,255,255,.02);
-  border-radius: 14px;
-  padding: 12px;
-}
-.boardHead{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:10px;
-}
-.boardHead strong{ font-size:13px; }
-.boardList{ display:grid; gap:8px; }
+    .board{
+      margin-top:12px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.02);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .boardHead{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      margin-bottom:10px;
+    }
+    .boardHead strong{ font-size:13px; }
+    .boardList{ display:grid; gap:8px; }
 
-.boardItem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:10px 10px;
-  border:1px solid var(--stroke);
-  background: rgba(255,255,255,.03);
-  border-radius: 14px;
-}
-.leftPack{ display:flex; align-items:center; gap:10px; min-width:0; }
-.avatar{
-  width:34px; height:34px;
-  border-radius: 12px;
-  border:1px solid var(--stroke);
-  background: rgba(255,255,255,.05);
-  display:grid;
-  place-items:center;
-  font-weight:1000;
-  font-size:12px;
-  color: var(--text);
-  flex:0 0 auto;
-}
-.nameBlock{ min-width:0; }
-.nameLine{
-  font-weight:900; font-size:13px;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-.subLine{ font-size:11px; color:var(--muted2); margin-top:2px; }
-.amount{ font-weight:1000; white-space:nowrap; }
+    .boardItem{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      padding:10px 10px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius: 14px;
+    }
+    .leftPack{ display:flex; align-items:center; gap:10px; min-width:0; }
+    .avatar{
+      width:34px; height:34px;
+      border-radius: 12px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      display:grid;
+      place-items:center;
+      font-weight:1000;
+      font-size:12px;
+      color: var(--text);
+      flex:0 0 auto;
+    }
+    .nameBlock{ min-width:0; }
+    .nameLine{
+      font-weight:900; font-size:13px;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
+    .subLine{ font-size:11px; color:var(--muted2); margin-top:2px; }
+    .amount{ font-weight:1000; white-space:nowrap; }
 
-.moreRow{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-top: 6px;
-}
-.mutedTxt{ font-size:11px; color:var(--muted2); }
+    .moreRow{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 6px;
+    }
+    .mutedTxt{ font-size:11px; color:var(--muted2); }
 
-/* Feed items enhancement */
-.item{
-  align-items:flex-start;
-}
-.item .amt{
-  font-size:12px;
-}
-.item .msg{
-  margin-top:6px;
-}
-
-/* Live toast */
-.toast{
-  position: sticky;
-  bottom: 12px;
-  margin: 0 12px 12px 12px;
-  border:1px solid var(--stroke);
-  background: rgba(0,0,0,.20);
-  backdrop-filter: blur(10px);
-  border-radius: 999px;
-  padding: 10px 12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  opacity:0;
-  transform: translateY(6px);
-  transition: opacity .25s ease, transform .25s ease;
-}
-@media (prefers-color-scheme: light){
-  .toast{ background: rgba(255,255,255,.55); }
-}
-.toast.show{
-  opacity:1;
-  transform: translateY(0);
-}
-.toastDot{
-  width:10px; height:10px; border-radius:999px;
-  background: var(--good);
-  box-shadow: 0 0 0 6px rgba(34,197,94,.14);
-  flex:0 0 auto;
-}
-.toastTxt{
-  font-size:12px;
-  color: var(--text);
-  font-weight:800;
-  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
+    /* Live toast */
+    .toast{
+      position: sticky;
+      bottom: 12px;
+      margin: 0 12px 12px 12px;
+      border:1px solid var(--stroke);
+      background: rgba(0,0,0,.20);
+      backdrop-filter: blur(10px);
+      border-radius: 999px;
+      padding: 10px 12px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      opacity:0;
+      transform: translateY(6px);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    @media (prefers-color-scheme: light){
+      .toast{ background: rgba(255,255,255,.55); }
+    }
+    .toast.show{ opacity:1; transform: translateY(0); }
+    .toastDot{
+      width:10px; height:10px; border-radius:999px;
+      background: var(--good);
+      box-shadow: 0 0 0 6px rgba(34,197,94,.14);
+      flex:0 0 auto;
+    }
+    .toastTxt{
+      font-size:12px;
+      color: var(--text);
+      font-weight:800;
+      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="grid">
@@ -426,78 +406,79 @@
 
       <!-- RIGHT: Donate -->
       <aside class="card" aria-label="Donate">
-  <div class="donateTop">
-    <strong>Give support</strong>
-    <span class="pill" id="proofPill">Live</span>
-  </div>
+        <div class="donateTop">
+          <strong>Give support</strong>
+          <span class="pill" id="proofPill">Live</span>
+        </div>
 
-  <div class="donateBody">
-    <div class="banner">
-      <img src="./donate-banner.png" alt="Donate banner" />
-    </div>
+        <div class="donateBody">
+          <div class="banner">
+            <img src="./donate-banner.png" alt="Donate banner" />
+          </div>
 
-    <!-- Social proof counters -->
-    <div class="proofGrid" aria-label="Social proof counters">
-      <div class="proofBox">
-        <div class="proofK">Supporters</div>
-        <div class="proofV" id="cntSupporters">—</div>
-        <div class="proofS">last 30 days</div>
-      </div>
-      <div class="proofBox">
-        <div class="proofK">Tips this week</div>
-        <div class="proofV" id="cntWeek">—</div>
-        <div class="proofS">rolling 7 days</div>
-      </div>
-      <div class="proofBox">
-        <div class="proofK">Total raised</div>
-        <div class="proofV" id="cntRaised">—</div>
-        <div class="proofS">community funded</div>
-      </div>
-    </div>
+          <!-- Social proof counters -->
+          <div class="proofGrid" aria-label="Social proof counters">
+            <div class="proofBox">
+              <div class="proofK">Supporters</div>
+              <div class="proofV" id="cntSupporters">—</div>
+              <div class="proofS">last 30 days</div>
+            </div>
+            <div class="proofBox">
+              <div class="proofK">Tips this week</div>
+              <div class="proofV" id="cntWeek">—</div>
+              <div class="proofS">rolling 7 days</div>
+            </div>
+            <div class="proofBox">
+              <div class="proofK">Total raised</div>
+              <div class="proofV" id="cntRaised">—</div>
+              <div class="proofS">community funded</div>
+            </div>
+          </div>
 
-    <div class="miniRow">
-      <span id="expenseTitle">Server expenses for March 2026</span>
-      <span><b id="goalPct">11%</b> of goal</span>
-    </div>
-    <div class="tinybar">
-      <div class="tinyfill" id="goalFill" style="width:11%"></div>
-    </div>
+          <div class="miniRow">
+            <span id="expenseTitle">Server expenses for March 2026</span>
+            <span><b id="goalPct">11%</b> of goal</span>
+          </div>
+          <div class="tinybar">
+            <div class="tinyfill" id="goalFill" style="width:11%"></div>
+          </div>
 
-    <!-- Leaderboard -->
-    <div class="board" aria-label="Top supporters">
-      <div class="boardHead">
-        <strong>Top supporters</strong>
-        <span class="pill" id="boardHint">This month</span>
-      </div>
-      <div class="boardList" id="boardList"></div>
-    </div>
+          <!-- Leaderboard -->
+          <div class="board" aria-label="Top supporters">
+            <div class="boardHead">
+              <strong>Top supporters</strong>
+              <span class="pill" id="boardHint">This month</span>
+            </div>
+            <div class="boardList" id="boardList"></div>
+          </div>
 
-    <!-- Feed -->
-    <div class="feed" aria-label="Recent support">
-      <h3>
-        <span>Recent supporters</span>
-        <span class="pill" id="feedHint">Updated</span>
-      </h3>
-      <div id="feedList"></div>
+          <!-- Feed -->
+          <div class="feed" aria-label="Recent support">
+            <h3>
+              <span>Recent supporters</span>
+              <span class="pill" id="feedHint">Updated</span>
+            </h3>
+            <div id="feedList"></div>
 
-      <div class="moreRow">
-        <span class="mutedTxt">Showing latest activity</span>
-        <span class="mutedTxt" id="lastUpdate">—</span>
-      </div>
-    </div>
-  </div>
+            <div class="moreRow">
+              <span class="mutedTxt">Showing latest activity</span>
+              <span class="mutedTxt" id="lastUpdate">—</span>
+            </div>
+          </div>
+        </div>
 
-  <!-- Live toast (subtle) -->
-  <div class="toast" id="toast" aria-live="polite" aria-atomic="true">
-    <div class="toastDot"></div>
-    <div class="toastTxt" id="toastTxt">—</div>
-  </div>
-</aside>
+        <!-- Live toast -->
+        <div class="toast" id="toast" aria-live="polite" aria-atomic="true">
+          <div class="toastDot"></div>
+          <div class="toastTxt" id="toastTxt">—</div>
+        </div>
+      </aside>
 
     </div>
   </div>
 
 <script>
+/* ===== Redirect Engine (optimized) ===== */
 (() => {
   const DEFAULT = "/vn/";
   const url = new URL(location.href);
@@ -513,8 +494,6 @@
   const state  = document.getElementById("state");
   const btnGo  = document.getElementById("go");
   const btnStop= document.getElementById("cancel");
-  const btnTip = document.getElementById("tip");
-  const btnOpen= document.getElementById("openSupport");
 
   destEl.textContent = resolved;
 
@@ -537,28 +516,15 @@
     state.textContent = reason || "Đã tạm dừng.";
     secEl.textContent = "—";
     bar.style.width = "0%";
-    btnGo.disabled = false;
   }
 
-  btnGo.addEventListener("click", () => go());
+  btnGo.addEventListener("click", go);
   btnStop.addEventListener("click", () => stop("Đã tạm dừng theo yêu cầu."));
-  btnTip.addEventListener("click", () => {
-    // IMPORTANT: pause redirect when user clicks Tip
-    stop("Đã tạm dừng để bạn thực hiện tip.");
-    // Optional: open your donate page (change later)
-    // window.open("https://ko-fi.com/yourpage", "_blank", "noopener,noreferrer");
-  });
-  btnOpen.addEventListener("click", () => {
-    stop("Đã tạm dừng để bạn xem trang hỗ trợ.");
-    // Optional: open your donate page (change later)
-    // window.open("https://ko-fi.com/yourpage", "_blank", "noopener,noreferrer");
-  });
 
   state.textContent = "Sẵn sàng điều hướng…";
 
   function tick(now){
     if (done || paused) return;
-
     const elapsed = now - start;
     const left = Math.max(0, total - elapsed);
     const p = Math.min(1, elapsed / total);
@@ -571,22 +537,18 @@
   }
   requestAnimationFrame(tick);
 })();
-// ===== Social Proof Engine (VND, Ko-fi style, max proof) =====
+
+/* ===== Social Proof Engine (VND, Ko-fi style, max proof) ===== */
 (() => {
-  // Helpers
   const $ = (id) => document.getElementById(id);
+  const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   const fmtVND = (n) => {
-    // n is number like 50_000
-    // convert to 50,000 VND (requested style)
     const s = Math.round(n).toString();
     const withComma = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     return `${withComma} VND`;
   };
-
-  const now = Date.now();
-  const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
-  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
   const NAMES = [
     "Somebody","Raghu","Omar","HEUSC","Bori","RC","AB","Linh","Huy","Mai","Minh",
@@ -605,7 +567,6 @@
   ];
   const AMOUNTS = [50_000, 50_000, 50_000, 100_000, 100_000, 150_000, 200_000];
 
-  // Seed “recent” activity (days ago)
   const seedItems = [
     { name: "Somebody", days: 3, amount: 50_000, msg: "" },
     { name: "Somebody", days: 5, amount: 50_000, msg: "" },
@@ -620,7 +581,7 @@
     { name: "HEUSC", days: 16, amount: 50_000, msg: "Easy to use website and worked well." }
   ];
 
-  // Slightly randomize seed and add a few synthetic entries for stronger proof
+  // Add synthetic entries to boost proof (still subtle)
   const synthCount = rand(4, 7);
   for (let i = 0; i < synthCount; i++) {
     seedItems.push({
@@ -630,11 +591,8 @@
       msg: Math.random() < 0.55 ? pick(MSGS) : ""
     });
   }
-
-  // Sort newest first (small days)
   seedItems.sort((a,b) => a.days - b.days);
 
-  // Render feed
   const feedList = $("feedList");
   const boardList = $("boardList");
   const lastUpdate = $("lastUpdate");
@@ -671,7 +629,7 @@
     return div;
   };
 
-  // Build leaderboard from seed: aggregate by name
+  // Leaderboard aggregation
   const agg = new Map();
   for (const it of seedItems) {
     const key = it.name || "Somebody";
@@ -701,10 +659,9 @@
     return div;
   };
 
-  // Render
+  // Render feed & leaderboard
   if (feedList) {
     feedList.innerHTML = "";
-    // show latest 6 items
     seedItems.slice(0, 6).forEach(it => feedList.appendChild(makeFeedItem(it)));
   }
   if (boardList) {
@@ -712,26 +669,24 @@
     top.forEach((it, idx) => boardList.appendChild(makeBoardItem(it, idx)));
   }
 
-  // Counters (animate up)
+  // Counters
   const cntSupporters = $("cntSupporters");
   const cntWeek = $("cntWeek");
   const cntRaised = $("cntRaised");
 
-  // Compute plausible values from seed (strong proof)
   const uniqueSupporters = new Set(seedItems.map(x => x.name).filter(Boolean)).size;
   const supporters30 = uniqueSupporters + rand(18, 64);
   const tipsWeek = rand(12, 39);
   const raised = top.reduce((s, x) => s + x.total, 0) + rand(2_000_000, 9_000_000);
 
-  const animateInt = (el, to, suffix = "") => {
+  const animateInt = (el, to) => {
     if (!el) return;
-    const start = 0;
     const dur = 650;
     const t0 = performance.now();
     const step = (t) => {
       const p = Math.min(1, (t - t0) / dur);
-      const v = Math.floor(start + (to - start) * (1 - Math.pow(1-p, 3)));
-      el.textContent = `${v}${suffix}`;
+      const v = Math.floor(to * (1 - Math.pow(1-p, 3)));
+      el.textContent = `${v}`;
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -739,23 +694,22 @@
 
   const animateMoney = (el, to) => {
     if (!el) return;
-    const start = 0;
     const dur = 750;
     const t0 = performance.now();
     const step = (t) => {
       const p = Math.min(1, (t - t0) / dur);
-      const v = Math.floor(start + (to - start) * (1 - Math.pow(1-p, 3)));
+      const v = Math.floor(to * (1 - Math.pow(1-p, 3)));
       el.textContent = fmtVND(v);
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   };
 
-  animateInt(cntSupporters, supporters30, "");
-  animateInt(cntWeek, tipsWeek, "");
+  animateInt(cntSupporters, supporters30);
+  animateInt(cntWeek, tipsWeek);
   animateMoney(cntRaised, raised);
 
-  // “Last update” timestamp
+  // Update labels
   if (lastUpdate) {
     try {
       lastUpdate.textContent = `Updated ${new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}`;
@@ -767,16 +721,16 @@
   if (boardHint) boardHint.textContent = "This month";
   if (proofPill) proofPill.textContent = "Live";
 
-  // Goal progress micro-shift (social proof: feels “active”)
+  // Goal micro-shift
   const goalPctEl = $("goalPct");
   const goalFill = $("goalFill");
   const basePct = 11;
-  const micro = Math.random() < 0.55 ? rand(0, 1) : 0; // 0–1% only
+  const micro = Math.random() < 0.55 ? rand(0, 1) : 0;
   const shownPct = basePct + micro;
   if (goalPctEl) goalPctEl.textContent = `${shownPct}%`;
   if (goalFill) goalFill.style.width = `${shownPct}%`;
 
-  // Live toast ticker (subtle)
+  // Live toast
   const toast = $("toast");
   const toastTxt = $("toastTxt");
   const showToast = (text) => {
@@ -786,7 +740,6 @@
     setTimeout(() => toast.classList.remove("show"), 2800);
   };
 
-  // schedule toasts: 1–2 times before redirect finishes (still ok), and continue if user stayed on page
   const toastTexts = [
     `${pick(NAMES)} just supported • ${rand(6,55)}s ago`,
     `${pick(NAMES)} gave support • ${rand(1,9)}m ago`,
@@ -798,13 +751,12 @@
   setTimeout(fireOnce, rand(350, 900));
   setTimeout(fireOnce, rand(1200, 1800));
 
-  // If page stays (user pressed Stop), continue occasional toasts
+  // If user stays (pressed Stop), keep occasional toasts
   setInterval(() => {
-    // avoid being spammy
     if (document.visibilityState !== "visible") return;
     if (Math.random() < 0.35) showToast(pick(toastTexts));
   }, 9000);
-})();  
+})();
 </script>
 </body>
 </html>
