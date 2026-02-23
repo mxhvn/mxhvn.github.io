@@ -1,11 +1,567 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="vi">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="refresh" content="0; url=/vn/">
-<title>Redirect</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>MXHVN • Router</title>
+
+  <!-- Preconnect / Prefetch for faster redirect -->
+  <link rel="preconnect" href="https://mxhvn.github.io" crossorigin>
+  <link rel="dns-prefetch" href="//mxhvn.github.io">
+  <link rel="prefetch" href="/vn/" as="document">
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#070a14;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.65);
+      --muted2: rgba(255,255,255,.45);
+      --ok: #32d583;
+      --warn:#fbbf24;
+      --bad: #fb7185;
+      --accent: #8b5cf6;
+      --accent2:#22d3ee;
+      --shadow: 0 20px 80px rgba(0,0,0,.45);
+      --radius: 22px;
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg1:#f7f8ff; --bg2:#f2f3ff;
+        --card: rgba(0,0,0,.04);
+        --card2: rgba(0,0,0,.06);
+        --stroke: rgba(0,0,0,.08);
+        --text: rgba(0,0,0,.88);
+        --muted: rgba(0,0,0,.60);
+        --muted2: rgba(0,0,0,.45);
+        --shadow: 0 18px 70px rgba(0,0,0,.12);
+      }
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(139,92,246,.22), transparent 60%),
+        radial-gradient(900px 700px at 85% 35%, rgba(34,211,238,.18), transparent 55%),
+        radial-gradient(900px 700px at 50% 110%, rgba(50,213,131,.12), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow:hidden;
+    }
+
+    .grid{
+      position:fixed; inset:-2px;
+      background-image:
+        linear-gradient(to right, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 46px 46px;
+      mask-image: radial-gradient(closest-side at 50% 40%, rgba(0,0,0,.85), transparent 70%);
+      pointer-events:none;
+      opacity:.5;
+    }
+    @media (prefers-color-scheme: light){
+      .grid{
+        background-image:
+          linear-gradient(to right, rgba(0,0,0,.05) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(0,0,0,.05) 1px, transparent 1px);
+        opacity:.35;
+      }
+    }
+
+    .wrap{
+      height:100%;
+      display:grid;
+      place-items:center;
+      padding: 18px;
+    }
+
+    .card{
+      width:min(980px, 100%);
+      border: 1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card), transparent 140%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      transform: translateY(6px);
+      animation: pop .8s cubic-bezier(.2,.8,.2,1) forwards;
+      opacity:0;
+    }
+    @keyframes pop{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .top{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      padding: 18px 18px 0 18px;
+    }
+
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: conic-gradient(from 190deg, var(--accent), var(--accent2), var(--ok), var(--accent));
+      box-shadow: 0 18px 45px rgba(139,92,246,.25);
+      position:relative;
+    }
+    .logo:after{
+      content:"";
+      position:absolute; inset:1px;
+      border-radius:13px;
+      background: rgba(0,0,0,.18);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.12);
+    }
+    @media (prefers-color-scheme: light){
+      .logo:after{ background: rgba(255,255,255,.35); border-color: rgba(0,0,0,.08); }
+    }
+
+    .brand h1{
+      margin:0;
+      font-size: 18px;
+      letter-spacing:.2px;
+    }
+    .brand p{
+      margin:4px 0 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .body{
+      padding: 14px 18px 18px 18px;
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 14px;
+    }
+    @media (max-width: 860px){
+      .body{ grid-template-columns: 1fr; }
+    }
+
+    .panel{
+      border:1px solid var(--stroke);
+      background: linear-gradient(180deg, var(--card2), transparent 170%);
+      border-radius: 18px;
+      padding: 16px;
+      position:relative;
+    }
+
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 8px;
+    }
+    .title strong{ font-size: 14px; }
+    .pill{
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      color: var(--muted);
+      background: rgba(255,255,255,.04);
+    }
+    @media (prefers-color-scheme: light){
+      .pill{ background: rgba(0,0,0,.03); }
+    }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      flex-wrap:wrap;
+    }
+
+    .kv{
+      display:grid;
+      grid-template-columns: 160px 1fr;
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    @media (max-width: 520px){
+      .kv{ grid-template-columns: 1fr; }
+    }
+    .k{ color: var(--muted2); }
+    .v{ color: var(--text); word-break: break-all; }
+
+    .progress{
+      margin-top: 14px;
+      height: 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,.04);
+      overflow:hidden;
+      position:relative;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--ok));
+      border-radius: 999px;
+      transition: width .25s ease;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 14px;
+    }
+    button,a.btn{
+      appearance:none;
+      border: 1px solid var(--stroke);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    button:hover,a.btn:hover{ background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.18); }
+    button:active,a.btn:active{ transform: translateY(1px); }
+
+    .primary{
+      background: linear-gradient(135deg, rgba(139,92,246,.30), rgba(34,211,238,.18));
+      border-color: rgba(139,92,246,.35);
+    }
+    .danger{
+      background: rgba(251,113,133,.10);
+      border-color: rgba(251,113,133,.30);
+    }
+    .muted{
+      background: rgba(255,255,255,.03);
+    }
+
+    .status{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      background: var(--warn);
+      box-shadow: 0 0 0 6px rgba(251,191,36,.14);
+    }
+    .dot.ok{
+      background: var(--ok);
+      box-shadow: 0 0 0 6px rgba(50,213,131,.14);
+    }
+    .dot.bad{
+      background: var(--bad);
+      box-shadow: 0 0 0 6px rgba(251,113,133,.14);
+    }
+
+    .mini{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .footer{
+      padding: 0 18px 16px 18px;
+      color: var(--muted2);
+      font-size: 12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .kbd{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      border:1px solid var(--stroke);
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+    }
+  </style>
 </head>
 <body>
-Redirecting...
+  <div class="grid"></div>
+
+  <div class="wrap">
+    <div class="card" role="application" aria-label="MXHVN Router">
+      <div class="top">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="brand">
+          <h1>MXHVN Router</h1>
+          <p>Routing thông minh • UI mượt • fallback an toàn</p>
+        </div>
+      </div>
+
+      <div class="body">
+        <div class="panel">
+          <div class="title">
+            <strong>Điểm đến mặc định</strong>
+            <span class="pill" id="pillTarget">/vn/</span>
+          </div>
+
+          <div class="status">
+            <span class="dot" id="dot"></span>
+            <span id="statusText">Đang chuẩn bị điều hướng…</span>
+          </div>
+
+          <div class="kv" aria-label="Route info">
+            <div class="k">Current URL</div><div class="v" id="curUrl">—</div>
+            <div class="k">Resolved Target</div><div class="v" id="targetUrl">—</div>
+            <div class="k">Mode</div><div class="v" id="mode">—</div>
+          </div>
+
+          <div class="progress" aria-label="Progress">
+            <div class="bar" id="bar"></div>
+          </div>
+          <div class="mini">
+            <div>Auto-redirect sau <span class="kbd" id="countdown">2.0s</span></div>
+            <div><span class="kbd" id="net">checking…</span></div>
+          </div>
+
+          <div class="actions">
+            <button class="primary" id="btnGo">Đi ngay</button>
+            <button class="muted" id="btnStay">Ở lại</button>
+            <a class="btn" id="btnOpen" href="/vn/" rel="nofollow">Mở /vn/</a>
+            <button class="danger" id="btnReset">Reset preference</button>
+          </div>
+
+          <div class="row" id="hint">
+            Tip: nhấn <span class="kbd">Enter</span> để đi ngay, <span class="kbd">Esc</span> để hủy.
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="title">
+            <strong>Tuỳ chọn routing</strong>
+            <span class="pill">Smart</span>
+          </div>
+
+          <div class="row">
+            • Giữ nguyên <span class="kbd">path</span> / <span class="kbd">query</span> / <span class="kbd">hash</span> khi deep-link<br/>
+            • Fallback nếu target lỗi (404/timeout) → về <span class="kbd">/vn/</span><br/>
+            • Ghi nhớ lựa chọn trong <span class="kbd">localStorage</span><br/>
+            • Prefetch để chuyển trang nhanh hơn
+          </div>
+
+          <div class="row" style="margin-top:12px">
+            <span class="pill">Examples</span>
+          </div>
+          <div class="kv">
+            <div class="k">/</div><div class="v">→ /vn/</div>
+            <div class="k">/?a=1</div><div class="v">→ /vn/?a=1</div>
+            <div class="k">/docs#x</div><div class="v">→ /vn/docs#x</div>
+          </div>
+
+          <div class="row" style="margin-top:12px">
+            Nếu sau này bạn có thêm project khác (vd: <span class="kbd">/ai/</span>, <span class="kbd">/dash/</span>), router này mở rộng cực dễ.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>© <span id="year"></span> MXHVN • GitHub Pages Router</div>
+        <div>Hiệu năng: prefetch + early navigation</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const DEFAULT = "/vn/";
+  const PREF_KEY = "mxhvn.router.target";
+  const PREF_MODE = "mxhvn.router.mode";
+
+  const $ = (id) => document.getElementById(id);
+
+  const dot = $("dot");
+  const statusText = $("statusText");
+  const curUrl = $("curUrl");
+  const targetUrlEl = $("targetUrl");
+  const pillTarget = $("pillTarget");
+  const modeEl = $("mode");
+  const bar = $("bar");
+  const countdownEl = $("countdown");
+  const netEl = $("net");
+
+  const btnGo = $("btnGo");
+  const btnStay = $("btnStay");
+  const btnReset = $("btnReset");
+  const btnOpen = $("btnOpen");
+
+  $("year").textContent = new Date().getFullYear();
+
+  const url = new URL(location.href);
+  curUrl.textContent = url.pathname + url.search + url.hash;
+
+  // 1) Determine preferred target
+  const saved = localStorage.getItem(PREF_KEY);
+  const savedMode = localStorage.getItem(PREF_MODE);
+  const baseTarget = (saved && saved.startsWith("/")) ? saved : DEFAULT;
+
+  // 2) Deep-link preserve: root/path/query/hash → /vn/<same>
+  // Rule: if already under /vn/ then no redirect needed
+  const alreadyInTarget = url.pathname === baseTarget || url.pathname.startsWith(baseTarget);
+  let resolved = baseTarget;
+
+  if (!alreadyInTarget) {
+    const path = url.pathname === "/" ? "" : url.pathname; // keep deep links
+    resolved = baseTarget.replace(/\/+$/,"/") + path.replace(/^\/+/,"");
+    // Keep query & hash
+    resolved += url.search + url.hash;
+  } else {
+    resolved = url.pathname + url.search + url.hash;
+  }
+
+  pillTarget.textContent = baseTarget;
+  btnOpen.href = baseTarget;
+
+  // 3) Mode: smart/forced
+  const mode = savedMode || (saved ? "remembered" : "smart");
+  modeEl.textContent = mode;
+
+  targetUrlEl.textContent = resolved;
+
+  // If we're already where we need to be
+  if (alreadyInTarget) {
+    dot.className = "dot ok";
+    statusText.textContent = "Bạn đang ở đúng route.";
+    netEl.textContent = "ready";
+    bar.style.width = "100%";
+    countdownEl.textContent = "0s";
+    btnGo.disabled = true;
+    return;
+  }
+
+  // 4) Health-check target quickly (avoid redirect to dead route)
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 1600);
+
+  const check = async () => {
+    try {
+      netEl.textContent = "checking…";
+      // Use HEAD first; fallback to GET if blocked.
+      let ok = false;
+      try {
+        const r = await fetch(baseTarget, { method: "HEAD", cache: "no-store", signal: controller.signal });
+        ok = r.ok;
+      } catch (_) {
+        const r = await fetch(baseTarget, { method: "GET", cache: "no-store", signal: controller.signal });
+        ok = r.ok;
+      }
+
+      clearTimeout(timeout);
+
+      if (ok) {
+        dot.className = "dot ok";
+        statusText.textContent = "Target OK. Sắp điều hướng…";
+        netEl.textContent = "ok";
+        startCountdown(() => go(resolved));
+      } else {
+        dot.className = "dot bad";
+        statusText.textContent = "Target có vẻ lỗi. Điều hướng về /vn/ (safe).";
+        netEl.textContent = "bad";
+        startCountdown(() => go(DEFAULT + url.search + url.hash));
+      }
+    } catch (e) {
+      clearTimeout(timeout);
+      dot.className = "dot";
+      statusText.textContent = "Không kiểm tra được target (timeout). Vẫn sẽ điều hướng an toàn.";
+      netEl.textContent = "timeout";
+      startCountdown(() => go(resolved));
+    }
+  };
+
+  // 5) Countdown + progress bar
+  let t = 2000; // ms
+  let raf = null;
+  let started = null;
+  let cancelled = false;
+
+  function startCountdown(onDone){
+    started = performance.now();
+    cancelled = false;
+
+    const tick = (now) => {
+      if (cancelled) return;
+      const elapsed = now - started;
+      const left = Math.max(0, t - elapsed);
+
+      const p = Math.min(1, elapsed / t);
+      bar.style.width = (p * 100).toFixed(0) + "%";
+      countdownEl.textContent = (left/1000).toFixed(1) + "s";
+
+      if (left <= 0) {
+        bar.style.width = "100%";
+        onDone();
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    raf = requestAnimationFrame(tick);
+  }
+
+  function go(dest){
+    // Save preference for next time
+    localStorage.setItem(PREF_KEY, baseTarget);
+    localStorage.setItem(PREF_MODE, "remembered");
+
+    // Use replace to avoid polluting history
+    location.replace(dest);
+  }
+
+  // 6) Controls
+  btnGo.addEventListener("click", () => { cancelled = true; go(resolved); });
+  btnStay.addEventListener("click", () => {
+    cancelled = true;
+    if (raf) cancelAnimationFrame(raf);
+    dot.className = "dot";
+    statusText.textContent = "Đã hủy auto-redirect. Bạn có thể bấm “Đi ngay” khi muốn.";
+    netEl.textContent = "paused";
+    bar.style.width = "0%";
+    countdownEl.textContent = "—";
+  });
+
+  btnReset.addEventListener("click", () => {
+    localStorage.removeItem(PREF_KEY);
+    localStorage.removeItem(PREF_MODE);
+    dot.className = "dot ok";
+    statusText.textContent = "Đã reset preference. Lần sau sẽ dùng /vn/ mặc định.";
+    netEl.textContent = "reset";
+  });
+
+  // Keyboard shortcuts
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") { cancelled = true; go(resolved); }
+    if (e.key === "Escape") { btnStay.click(); }
+  });
+
+  // Start
+  check();
+})();
+</script>
 </body>
 </html>
