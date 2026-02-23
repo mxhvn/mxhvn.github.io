@@ -478,7 +478,7 @@
   </div>
 
 <script>
-/* ===== Redirect Engine (optimized) ===== */
+/* ===== Redirect Engine (safe + no missing buttons) ===== */
 (() => {
   const DEFAULT = "/vn/";
   const url = new URL(location.href);
@@ -495,33 +495,34 @@
   const btnGo  = document.getElementById("go");
   const btnStop= document.getElementById("cancel");
 
-  destEl.textContent = resolved;
-
-  try { ts.textContent = new Date().toLocaleString("vi-VN"); } catch(e){ ts.textContent = ""; }
+  if (destEl) destEl.textContent = resolved;
+  try { if (ts) ts.textContent = new Date().toLocaleString("vi-VN"); } catch(e){}
 
   let total = 2000; // ms
   let start = performance.now();
   let paused = false;
   let done = false;
 
+  const setState = (txt) => { if (state) state.textContent = txt; };
+
   function go() {
     if (done) return;
     done = true;
-    state.textContent = "Đang chuyển trang…";
+    setState("Đang chuyển trang…");
     location.replace(resolved);
   }
 
   function stop(reason) {
     paused = true;
-    state.textContent = reason || "Đã tạm dừng.";
-    secEl.textContent = "—";
-    bar.style.width = "0%";
+    setState(reason || "Đã tạm dừng.");
+    if (secEl) secEl.textContent = "—";
+    if (bar) bar.style.width = "0%";
   }
 
-  btnGo.addEventListener("click", go);
-  btnStop.addEventListener("click", () => stop("Đã tạm dừng theo yêu cầu."));
+  if (btnGo) btnGo.addEventListener("click", go);
+  if (btnStop) btnStop.addEventListener("click", () => stop("Đã tạm dừng theo yêu cầu."));
 
-  state.textContent = "Sẵn sàng điều hướng…";
+  setState("Sẵn sàng điều hướng…");
 
   function tick(now){
     if (done || paused) return;
@@ -529,8 +530,8 @@
     const left = Math.max(0, total - elapsed);
     const p = Math.min(1, elapsed / total);
 
-    bar.style.width = (p * 100).toFixed(0) + "%";
-    secEl.textContent = Math.ceil(left / 1000);
+    if (bar) bar.style.width = (p * 100).toFixed(0) + "%";
+    if (secEl) secEl.textContent = String(Math.ceil(left / 1000));
 
     if (left <= 0) return go();
     requestAnimationFrame(tick);
@@ -581,7 +582,7 @@
     { name: "HEUSC", days: 16, amount: 50_000, msg: "Easy to use website and worked well." }
   ];
 
-  // Add synthetic entries to boost proof (still subtle)
+  // Add synthetic entries to boost proof (subtle)
   const synthCount = rand(4, 7);
   for (let i = 0; i < synthCount; i++) {
     seedItems.push({
@@ -659,7 +660,6 @@
     return div;
   };
 
-  // Render feed & leaderboard
   if (feedList) {
     feedList.innerHTML = "";
     seedItems.slice(0, 6).forEach(it => feedList.appendChild(makeFeedItem(it)));
@@ -709,7 +709,6 @@
   animateInt(cntWeek, tipsWeek);
   animateMoney(cntRaised, raised);
 
-  // Update labels
   if (lastUpdate) {
     try {
       lastUpdate.textContent = `Updated ${new Date().toLocaleTimeString("vi-VN", { hour: "2-digit", minute: "2-digit" })}`;
@@ -747,11 +746,12 @@
     `${pick(NAMES)} supported • ${rand(2,20)}h ago`
   ];
 
+  // Fire a couple early toasts
   const fireOnce = () => showToast(pick(toastTexts));
   setTimeout(fireOnce, rand(350, 900));
   setTimeout(fireOnce, rand(1200, 1800));
 
-  // If user stays (pressed Stop), keep occasional toasts
+  // Continue if user stays
   setInterval(() => {
     if (document.visibilityState !== "visible") return;
     if (Math.random() < 0.35) showToast(pick(toastTexts));
