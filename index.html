@@ -6,11 +6,7 @@
   <meta name="color-scheme" content="light dark" />
   <title>MXHVN • Đang điều hướng…</title>
 
-  <meta http-equiv="x-dns-prefetch-control" content="on">
-  <link rel="dns-prefetch" href="//mxhvn.github.io">
-  <link rel="preconnect" href="https://mxhvn.github.io" crossorigin>
   <link rel="prefetch" href="/vn/" as="document">
-
   <style>
     :root{
       --bg:#0b1220;
@@ -18,7 +14,9 @@
       --stroke:rgba(255,255,255,.10);
       --text:rgba(255,255,255,.92);
       --muted:rgba(255,255,255,.68);
+      --muted2:rgba(255,255,255,.48);
       --primary:#4f46e5;
+      --good:#22c55e;
       --shadow: 0 24px 70px rgba(0,0,0,.45);
       --radius: 18px;
     }
@@ -29,6 +27,7 @@
         --stroke:rgba(0,0,0,.08);
         --text:rgba(0,0,0,.88);
         --muted:rgba(0,0,0,.58);
+        --muted2:rgba(0,0,0,.42);
         --shadow: 0 18px 60px rgba(0,0,0,.12);
       }
     }
@@ -38,22 +37,38 @@
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       background:
-        radial-gradient(900px 600px at 20% 10%, rgba(79,70,229,.18), transparent 55%),
+        radial-gradient(900px 600px at 18% 10%, rgba(79,70,229,.18), transparent 55%),
         radial-gradient(900px 600px at 90% 30%, rgba(59,130,246,.12), transparent 60%),
         var(--bg);
       color:var(--text);
+    }
+
+    .wrap{
+      height:100%;
       display:grid;
       place-items:center;
       padding:18px;
     }
+
+    .grid{
+      width:min(1080px, 100%);
+      display:grid;
+      grid-template-columns: 1fr 420px;
+      gap:14px;
+      align-items:start;
+    }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+    }
+
     .card{
-      width:min(520px, 100%);
       border:1px solid var(--stroke);
       background:linear-gradient(180deg, var(--card), transparent 160%);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
     }
+
     .header{
       padding:18px 18px 10px 18px;
       display:flex;
@@ -65,6 +80,7 @@
       background: linear-gradient(135deg, rgba(79,70,229,.95), rgba(59,130,246,.85));
       box-shadow: 0 16px 40px rgba(79,70,229,.25);
       position:relative;
+      flex:0 0 auto;
     }
     .mark:after{
       content:"";
@@ -76,20 +92,10 @@
     @media (prefers-color-scheme: light){
       .mark:after{ background: rgba(255,255,255,.45); border-color: rgba(0,0,0,.06); }
     }
-    h1{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-    .sub{
-      margin:4px 0 0 0;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.35;
-    }
-    .body{
-      padding: 10px 18px 18px 18px;
-    }
+    h1{ margin:0; font-size:16px; letter-spacing:.2px; }
+    .sub{ margin:4px 0 0 0; font-size:13px; color:var(--muted); line-height:1.35; }
+
+    .body{ padding: 10px 18px 18px 18px; }
 
     .info{
       border:1px solid var(--stroke);
@@ -109,12 +115,8 @@
       color:var(--muted);
       margin: 6px 0;
     }
-    .val{
-      color:var(--text);
-      font-weight:600;
-      word-break:break-all;
-      text-align:right;
-    }
+    .val{ color:var(--text); font-weight:700; word-break:break-all; text-align:right; }
+
     .progress{
       margin-top: 14px;
       height: 10px;
@@ -130,6 +132,7 @@
       background: linear-gradient(90deg, rgba(79,70,229,.95), rgba(59,130,246,.90));
       transition: width .2s ease;
     }
+
     .actions{
       display:flex;
       gap:10px;
@@ -141,20 +144,18 @@
       border:1px solid var(--stroke);
       border-radius:14px;
       padding: 11px 12px;
-      font-weight:700;
+      font-weight:800;
       font-size:13px;
       cursor:pointer;
       background: rgba(255,255,255,.04);
       color: var(--text);
-      transition: transform .08s ease, background .2s ease, border-color .2s ease;
+      transition: transform .08s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
     }
     button:active{ transform: translateY(1px); }
+    button:disabled{ opacity:.6; cursor:not-allowed; }
     .primary{
       background: linear-gradient(135deg, rgba(79,70,229,.24), rgba(59,130,246,.16));
       border-color: rgba(79,70,229,.35);
-    }
-    .muted{
-      background: rgba(255,255,255,.02);
     }
 
     .foot{
@@ -166,37 +167,205 @@
       gap:10px;
       flex-wrap:wrap;
     }
+
+    /* Donate panel */
+    .donateTop{
+      padding:14px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      border-bottom:1px solid var(--stroke);
+    }
+    .donateTop strong{ font-size:14px; }
+    .pill{
+      font-size:12px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      color:var(--muted);
+      background: rgba(255,255,255,.04);
+      white-space:nowrap;
+    }
+    .donateBody{ padding:14px; }
+    .banner{
+      width:100%;
+      border-radius:14px;
+      border:1px solid var(--stroke);
+      overflow:hidden;
+      background: rgba(255,255,255,.03);
+    }
+    .banner img{
+      width:100%;
+      display:block;
+    }
+    .miniRow{
+      margin-top:12px;
+      display:flex;
+      justify-content:space-between;
+      font-size:12px;
+      color:var(--muted);
+      gap:10px;
+    }
+    .tinybar{
+      margin-top:8px;
+      height:10px;
+      border-radius:999px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.05);
+      overflow:hidden;
+    }
+    .tinyfill{
+      height:100%;
+      width:11%;
+      background: var(--good);
+      border-radius:999px;
+    }
+
+    .tipBtn{
+      margin-top:12px;
+      width:100%;
+      background: linear-gradient(135deg, rgba(79,70,229,.30), rgba(59,130,246,.18));
+      border-color: rgba(79,70,229,.40);
+    }
+    .feed{
+      margin-top:14px;
+      border-top:1px solid var(--stroke);
+      padding-top:12px;
+    }
+    .feed h3{
+      margin:0 0 10px 0;
+      font-size:13px;
+      color:var(--muted);
+      font-weight:800;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+    .item{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      padding:10px 10px;
+      border:1px solid var(--stroke);
+      background: rgba(255,255,255,.03);
+      border-radius:14px;
+      margin-bottom:10px;
+    }
+    .who{ font-weight:800; color:var(--text); font-size:13px; }
+    .when{ color:var(--muted2); font-size:12px; margin-top:2px; }
+    .msg{ color:var(--muted); font-size:12px; margin-top:6px; line-height:1.35; }
+    .amt{ font-weight:900; color:var(--text); white-space:nowrap; }
+    .linkBtn{
+      margin-top:10px;
+      width:100%;
+      background: rgba(255,255,255,.03);
+    }
+    a{ color:inherit; text-decoration:none; }
   </style>
 </head>
 <body>
-  <div class="card" role="application" aria-label="Redirect screen">
-    <div class="header">
-      <div class="mark" aria-hidden="true"></div>
-      <div>
-        <h1>Đang điều hướng sang trang dịch vụ…</h1>
-        <p class="sub">Vui lòng không tắt trình duyệt trong quá trình chuyển trang.</p>
-      </div>
-    </div>
+  <div class="wrap">
+    <div class="grid">
 
-    <div class="body">
-      <div class="info" aria-label="Redirect info">
-        <div class="row"><span>Điểm đến</span><span class="val" id="dest">/vn/</span></div>
-        <div class="row"><span>Tự động sau</span><span class="val"><span id="sec">2</span>s</span></div>
-      </div>
+      <!-- LEFT: Redirect -->
+      <section class="card" aria-label="Redirect">
+        <div class="header">
+          <div class="mark" aria-hidden="true"></div>
+          <div>
+            <h1>Đang điều hướng sang trang dịch vụ…</h1>
+            <p class="sub">Vui lòng không tắt trình duyệt trong quá trình chuyển trang.</p>
+          </div>
+        </div>
 
-      <div class="progress" aria-label="Progress">
-        <div class="bar" id="bar"></div>
-      </div>
+        <div class="body">
+          <div class="info" aria-label="Redirect info">
+            <div class="row"><span>Điểm đến</span><span class="val" id="dest">/vn/</span></div>
+            <div class="row"><span>Tự động sau</span><span class="val"><span id="sec">2</span>s</span></div>
+            <div class="row"><span>Trạng thái</span><span class="val" id="state">Đang chuẩn bị…</span></div>
+          </div>
 
-      <div class="actions">
-        <button class="primary" id="go">Đi ngay</button>
-        <button class="muted" id="cancel">Hủy</button>
-      </div>
-    </div>
+          <div class="progress" aria-label="Progress">
+            <div class="bar" id="bar"></div>
+          </div>
 
-    <div class="foot">
-      <div>MXHVN</div>
-      <div id="ts"></div>
+          <div class="actions">
+            <button class="primary" id="go">Đi ngay</button>
+            <button id="cancel">Dừng</button>
+          </div>
+        </div>
+
+        <div class="foot">
+          <div>MXHVN</div>
+          <div id="ts"></div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Donate -->
+      <aside class="card" aria-label="Donate">
+        <div class="donateTop">
+          <strong>Give support</strong>
+          <span class="pill">Ko-fi style</span>
+        </div>
+        <div class="donateBody">
+          <div class="banner" aria-label="Donate banner">
+            <!-- Put donate-banner.png next to index.html -->
+            <img src="./donate-banner.png" alt="Donate banner" />
+          </div>
+
+          <div class="miniRow">
+            <span>Server expenses for March 2026</span>
+            <span><b>11%</b> of goal</span>
+          </div>
+          <div class="tinybar"><div class="tinyfill"></div></div>
+
+          <button class="tipBtn" id="tip">Tip $5</button>
+          <button class="linkBtn" id="openSupport">Mở trang hỗ trợ</button>
+
+          <div class="feed" aria-label="Recent support">
+            <h3>
+              <span>Recent supporters</span>
+              <span class="pill">Updated</span>
+            </h3>
+
+            <div class="item">
+              <div>
+                <div class="who">Somebody</div>
+                <div class="when">3 days ago</div>
+              </div>
+              <div class="amt">$5</div>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="who">Raghu</div>
+                <div class="when">8 days ago</div>
+                <div class="msg">Thank you bhai!</div>
+              </div>
+              <div class="amt">$5</div>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="who">Omar</div>
+                <div class="when">14 days ago</div>
+                <div class="msg">Good luck guys, awesome idea, i support it</div>
+              </div>
+              <div class="amt">$10</div>
+            </div>
+
+            <div class="item">
+              <div>
+                <div class="who">HEUSC</div>
+                <div class="when">16 days ago</div>
+                <div class="msg">Easy to use website and worked well.</div>
+              </div>
+              <div class="amt">$5</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
     </div>
   </div>
 
@@ -210,31 +379,58 @@
   const resolved = DEFAULT.replace(/\/+$/,"/") + path.replace(/^\/+/,"") + url.search + url.hash;
 
   const destEl = document.getElementById("dest");
-  const secEl = document.getElementById("sec");
-  const bar = document.getElementById("bar");
-  const ts = document.getElementById("ts");
-  const btnGo = document.getElementById("go");
-  const btnCancel = document.getElementById("cancel");
+  const secEl  = document.getElementById("sec");
+  const bar    = document.getElementById("bar");
+  const ts     = document.getElementById("ts");
+  const state  = document.getElementById("state");
+  const btnGo  = document.getElementById("go");
+  const btnStop= document.getElementById("cancel");
+  const btnTip = document.getElementById("tip");
+  const btnOpen= document.getElementById("openSupport");
 
   destEl.textContent = resolved;
 
-  // Footer timestamp (banking-like)
   try { ts.textContent = new Date().toLocaleString("vi-VN"); } catch(e){ ts.textContent = ""; }
 
   let total = 2000; // ms
   let start = performance.now();
-  let cancelled = false;
+  let paused = false;
+  let done = false;
 
-  const go = () => {
-    // replace keeps history clean (professional)
+  function go() {
+    if (done) return;
+    done = true;
+    state.textContent = "Đang chuyển trang…";
     location.replace(resolved);
-  };
+  }
 
-  btnGo.addEventListener("click", () => { cancelled = true; go(); });
-  btnCancel.addEventListener("click", () => { cancelled = true; secEl.textContent = "—"; bar.style.width = "0%"; });
+  function stop(reason) {
+    paused = true;
+    state.textContent = reason || "Đã tạm dừng.";
+    secEl.textContent = "—";
+    bar.style.width = "0%";
+    btnGo.disabled = false;
+  }
 
-  const tick = (now) => {
-    if (cancelled) return;
+  btnGo.addEventListener("click", () => go());
+  btnStop.addEventListener("click", () => stop("Đã tạm dừng theo yêu cầu."));
+  btnTip.addEventListener("click", () => {
+    // IMPORTANT: pause redirect when user clicks Tip
+    stop("Đã tạm dừng để bạn thực hiện tip.");
+    // Optional: open your donate page (change later)
+    // window.open("https://ko-fi.com/yourpage", "_blank", "noopener,noreferrer");
+  });
+  btnOpen.addEventListener("click", () => {
+    stop("Đã tạm dừng để bạn xem trang hỗ trợ.");
+    // Optional: open your donate page (change later)
+    // window.open("https://ko-fi.com/yourpage", "_blank", "noopener,noreferrer");
+  });
+
+  state.textContent = "Sẵn sàng điều hướng…";
+
+  function tick(now){
+    if (done || paused) return;
+
     const elapsed = now - start;
     const left = Math.max(0, total - elapsed);
     const p = Math.min(1, elapsed / total);
@@ -244,8 +440,7 @@
 
     if (left <= 0) return go();
     requestAnimationFrame(tick);
-  };
-
+  }
   requestAnimationFrame(tick);
 })();
 </script>
