@@ -9,7 +9,9 @@
   <link rel="prefetch" href="/vn/" as="document" />
   <style>
     :root{
+      /* ✅ ONE-COLOR BACKGROUND (Dark) */
       --bg:#0b1220;
+
       --card:rgba(255,255,255,.06);
       --stroke:rgba(255,255,255,.10);
       --text:rgba(255,255,255,.92);
@@ -17,17 +19,21 @@
       --muted2:rgba(255,255,255,.48);
       --primary:#4f46e5;
       --good:#22c55e;
+
       --shadow: 0 24px 70px rgba(0,0,0,.45);
       --radius: 18px;
     }
     @media (prefers-color-scheme: light){
       :root{
+        /* ✅ ONE-COLOR BACKGROUND (Light) */
         --bg:#f6f7fb;
+
         --card:rgba(0,0,0,.04);
         --stroke:rgba(0,0,0,.08);
         --text:rgba(0,0,0,.88);
         --muted:rgba(0,0,0,.58);
         --muted2:rgba(0,0,0,.42);
+
         --shadow: 0 18px 60px rgba(0,0,0,.12);
       }
     }
@@ -37,10 +43,7 @@
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-      background:
-        radial-gradient(900px 600px at 18% 10%, rgba(79,70,229,.18), transparent 55%),
-        radial-gradient(900px 600px at 90% 30%, rgba(59,130,246,.12), transparent 60%),
-        var(--bg);
+      background: var(--bg); /* ✅ single color */
       color:var(--text);
     }
 
@@ -64,10 +67,11 @@
 
     .card{
       border:1px solid var(--stroke);
-      background:linear-gradient(180deg, var(--card), transparent 160%);
+      background: var(--card);  /* ✅ cleaner than gradient */
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       overflow:hidden;
+      backdrop-filter: blur(10px);
     }
 
     .header{
@@ -91,7 +95,7 @@
       border:1px solid rgba(255,255,255,.12);
     }
     @media (prefers-color-scheme: light){
-      .mark:after{ background: rgba(255,255,255,.45); border-color: rgba(0,0,0,.06); }
+      .mark:after{ background: rgba(255,255,255,.55); border-color: rgba(0,0,0,.06); }
     }
 
     h1{ margin:0; font-size:16px; letter-spacing:.2px; }
@@ -101,13 +105,14 @@
 
     .info{
       border:1px solid var(--stroke);
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.04); /* ✅ flatter */
       border-radius: 14px;
       padding: 12px;
     }
     @media (prefers-color-scheme: light){
       .info{ background: rgba(0,0,0,.02); }
     }
+
     .row{
       display:flex;
       justify-content:space-between;
@@ -156,7 +161,7 @@
     button:active{ transform: translateY(1px); }
     button:disabled{ opacity:.6; cursor:not-allowed; }
     .primary{
-      background: linear-gradient(135deg, rgba(79,70,229,.24), rgba(59,130,246,.16));
+      background: rgba(79,70,229,.20);
       border-color: rgba(79,70,229,.35);
     }
 
@@ -337,8 +342,7 @@
       bottom: 12px;
       margin: 0 12px 12px 12px;
       border:1px solid var(--stroke);
-      background: rgba(0,0,0,.20);
-      backdrop-filter: blur(10px);
+      background: rgba(255,255,255,.05); /* ✅ less contrast noise */
       border-radius: 999px;
       padding: 10px 12px;
       display:flex;
@@ -347,9 +351,7 @@
       opacity:0;
       transform: translateY(6px);
       transition: opacity .25s ease, transform .25s ease;
-    }
-    @media (prefers-color-scheme: light){
-      .toast{ background: rgba(255,255,255,.55); }
+      backdrop-filter: blur(10px);
     }
     .toast.show{ opacity:1; transform: translateY(0); }
     .toastDot{
@@ -416,7 +418,6 @@
             <img src="./donate-banner.png" alt="Donate banner" />
           </div>
 
-          <!-- Social proof counters -->
           <div class="proofGrid" aria-label="Social proof counters">
             <div class="proofBox">
               <div class="proofK">Supporters</div>
@@ -443,7 +444,6 @@
             <div class="tinyfill" id="goalFill" style="width:11%"></div>
           </div>
 
-          <!-- Leaderboard -->
           <div class="board" aria-label="Top supporters">
             <div class="boardHead">
               <strong>Top supporters</strong>
@@ -452,7 +452,6 @@
             <div class="boardList" id="boardList"></div>
           </div>
 
-          <!-- Feed -->
           <div class="feed" aria-label="Recent support">
             <h3>
               <span>Recent supporters</span>
@@ -467,7 +466,6 @@
           </div>
         </div>
 
-        <!-- Live toast -->
         <div class="toast" id="toast" aria-live="polite" aria-atomic="true">
           <div class="toastDot"></div>
           <div class="toastTxt" id="toastTxt">—</div>
@@ -478,12 +476,10 @@
   </div>
 
 <script>
-/* ===== Redirect Engine (safe + no missing buttons) ===== */
+/* ===== Redirect Engine ===== */
 (() => {
   const DEFAULT = "/vn/";
   const url = new URL(location.href);
-
-  // Deep-link preserve: /abc?x#y -> /vn/abc?x#y (but / -> /vn/)
   const path = (url.pathname === "/" ? "" : url.pathname);
   const resolved = DEFAULT.replace(/\/+$/,"/") + path.replace(/^\/+/,"") + url.search + url.hash;
 
@@ -498,7 +494,7 @@
   if (destEl) destEl.textContent = resolved;
   try { if (ts) ts.textContent = new Date().toLocaleString("vi-VN"); } catch(e){}
 
-  let total = 2000; // ms
+  let total = 2000;
   let start = performance.now();
   let paused = false;
   let done = false;
@@ -539,7 +535,7 @@
   requestAnimationFrame(tick);
 })();
 
-/* ===== Social Proof Engine (VND, Ko-fi style, max proof) ===== */
+/* ===== Social Proof Engine (VND) ===== */
 (() => {
   const $ = (id) => document.getElementById(id);
   const rand = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
@@ -547,8 +543,7 @@
 
   const fmtVND = (n) => {
     const s = Math.round(n).toString();
-    const withComma = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    return `${withComma} VND`;
+    return `${s.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} VND`;
   };
 
   const NAMES = [
@@ -582,7 +577,6 @@
     { name: "HEUSC", days: 16, amount: 50_000, msg: "Easy to use website and worked well." }
   ];
 
-  // Add synthetic entries to boost proof (subtle)
   const synthCount = rand(4, 7);
   for (let i = 0; i < synthCount; i++) {
     seedItems.push({
@@ -607,7 +601,6 @@
     const parts = clean.split(/\s+/).slice(0,2);
     return parts.map(p => p[0]).join("").toUpperCase();
   };
-
   const dayLabel = (d) => d === 1 ? "1 day ago" : `${d} days ago`;
 
   const makeFeedItem = (it) => {
@@ -630,7 +623,6 @@
     return div;
   };
 
-  // Leaderboard aggregation
   const agg = new Map();
   for (const it of seedItems) {
     const key = it.name || "Somebody";
@@ -669,7 +661,6 @@
     top.forEach((it, idx) => boardList.appendChild(makeBoardItem(it, idx)));
   }
 
-  // Counters
   const cntSupporters = $("cntSupporters");
   const cntWeek = $("cntWeek");
   const cntRaised = $("cntRaised");
@@ -685,8 +676,7 @@
     const t0 = performance.now();
     const step = (t) => {
       const p = Math.min(1, (t - t0) / dur);
-      const v = Math.floor(to * (1 - Math.pow(1-p, 3)));
-      el.textContent = `${v}`;
+      el.textContent = String(Math.floor(to * (1 - Math.pow(1-p, 3))));
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -698,8 +688,7 @@
     const t0 = performance.now();
     const step = (t) => {
       const p = Math.min(1, (t - t0) / dur);
-      const v = Math.floor(to * (1 - Math.pow(1-p, 3)));
-      el.textContent = fmtVND(v);
+      el.textContent = fmtVND(Math.floor(to * (1 - Math.pow(1-p, 3))));
       if (p < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
@@ -720,7 +709,6 @@
   if (boardHint) boardHint.textContent = "This month";
   if (proofPill) proofPill.textContent = "Live";
 
-  // Goal micro-shift
   const goalPctEl = $("goalPct");
   const goalFill = $("goalFill");
   const basePct = 11;
@@ -729,7 +717,6 @@
   if (goalPctEl) goalPctEl.textContent = `${shownPct}%`;
   if (goalFill) goalFill.style.width = `${shownPct}%`;
 
-  // Live toast
   const toast = $("toast");
   const toastTxt = $("toastTxt");
   const showToast = (text) => {
@@ -746,12 +733,10 @@
     `${pick(NAMES)} supported • ${rand(2,20)}h ago`
   ];
 
-  // Fire a couple early toasts
   const fireOnce = () => showToast(pick(toastTexts));
   setTimeout(fireOnce, rand(350, 900));
   setTimeout(fireOnce, rand(1200, 1800));
 
-  // Continue if user stays
   setInterval(() => {
     if (document.visibilityState !== "visible") return;
     if (Math.random() < 0.35) showToast(pick(toastTexts));
